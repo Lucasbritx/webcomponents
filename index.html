@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script>
+    class AppDrawer extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: "open" });
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = `<slot></slot>`;
+        shadow.appendChild(wrapper);
+      }
+    }
+    window.customElements.define("app-drawer", AppDrawer);
+    window.customElements.define("word-count", WordCount, { extends: "p" });
+    class WordCount extends HTMLParagraphElement {
+      constructor() {
+        super();
+        this.textContent = "Word count: 0";
+      }
+
+      connectedCallback() {
+        const text = this.getAttribute("text") || "";
+        const wordCount = text.split(/\s+/).filter(Boolean).length;
+        this.textContent = `Word count: ${wordCount}`;
+      }
+    }
+  </script>
+  <body>
+    <app-drawer>
+      <h1>Welcome to the App Drawer</h1>
+      <p>This is a custom element that can be used in your web applications.</p>
+    </app-drawer>
+    <p is="word-count" text="Hello world! This is a custom element.">A</p>
+    <word-count text="Another example with more words to count.">B</word-count>
+  </body>
+</html>
