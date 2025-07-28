@@ -20,22 +20,16 @@
     class WordCount extends HTMLParagraphElement {
       constructor() {
         super();
-        this.textContent = "Word count: 0";
-      }
-
-      connectedCallback() {
-        const text = this.getAttribute("text") || "";
-        const wordCount = text.split(/\s+/).filter(Boolean).length;
-        this.textContent = `Word count: ${wordCount}`;
       }
     }
   </script>
+  <link rel="stylesheet" href="index.css" />
   <body>
     <app-drawer>
       <h1>Welcome to the App Drawer</h1>
       <p>This is a custom element that can be used in your web applications.</p>
     </app-drawer>
-    <p is="word-count" text="Hello world! This is a custom element.">A</p>
-    <word-count text="Another example with more words to count.">B</word-count>
+    <p>A</p>
+    <word-count>Font size high</word-count>
   </body>
 </html>
