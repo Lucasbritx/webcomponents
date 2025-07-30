@@ -11,25 +11,53 @@
         super();
         const shadow = this.attachShadow({ mode: "open" });
         const wrapper = document.createElement("div");
-        wrapper.innerHTML = `<slot></slot>`;
+        wrapper.innerHTML = `
+        <style>
+          ::slotted(p.drawer-paragraph) {
+            color: red;
+            font-weight: bold;
+          }
+        </style>
+        <slot></slot>`;
         shadow.appendChild(wrapper);
       }
     }
     window.customElements.define("app-drawer", AppDrawer);
-    window.customElements.define("word-count", WordCount, { extends: "p" });
     class WordCount extends HTMLParagraphElement {
       constructor() {
         super();
       }
     }
+
+    window.customElements.define("word-count", WordCount, { extends: "p" });
+
+    class MeuComponente extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({ mode: "open" });
+
+        shadow.innerHTML = `
+      <style>
+        p {
+          color: blue;
+          font-weight: bold;
+        }
+      </style>
+      <p>Olá, sou um Web Component!</p>
+    `;
+      }
+    }
+
+    customElements.define("meu-componente", MeuComponente);
   </script>
   <link rel="stylesheet" href="index.css" />
   <body>
     <app-drawer>
       <h1>Welcome to the App Drawer</h1>
-      <p>This is a custom element that can be used in your web applications.</p>
+      <p class="drawer-paragraph">P inside drawer</p>
     </app-drawer>
-    <p>A</p>
-    <word-count>Font size high</word-count>
+    <p>Paragraph outside app drawer</p>
+    <p is="word-count">Texto aqui</p>
+    <meu-componente> </meu-componente>
   </body>
 </html>
