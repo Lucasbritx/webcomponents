@@ -1,0 +1,26 @@
+{
+  "name": "webcomponents-poc",
+  "version": "1.0.0",
+  "description": "A simple proof of concept project using HTML and Web Components",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build step needed for vanilla HTML/JS'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "webcomponents",
+    "html",
+    "javascript",
+    "custom-elements",
+    "shadow-dom"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
