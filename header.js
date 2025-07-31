@@ -8,6 +8,7 @@ class Header extends HTMLElement {
         h1 {
           color: darkgreen;
           font-family: sans-serif;
+          text-align: center;
         }
         div {
           padding: 10px;
