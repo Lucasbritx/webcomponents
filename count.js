@@ -1,15 +1,11 @@
 class Count extends HTMLElement {
   constructor() {
     super();
-    // Initialize state
     this.count = 0;
     
     const shadow = this.attachShadow({ mode: "open" });
     
-    // Create the component structure
     this.render();
-    
-    // Add event listeners
     this.setupEventListeners();
   }
 
@@ -86,7 +82,6 @@ class Count extends HTMLElement {
     resetBtn.addEventListener('click', () => this.reset());
   }
 
-  // State management methods
   increment() {
     this.count++;
     this.updateDisplay();
@@ -110,7 +105,6 @@ class Count extends HTMLElement {
     display.textContent = this.count;
   }
 
-  // Custom event to notify parent components of state changes
   dispatchCountChangeEvent() {
     this.dispatchEvent(new CustomEvent('countchange', {
       detail: { count: this.count },
@@ -118,18 +112,15 @@ class Count extends HTMLElement {
     }));
   }
 
-  // Getter for external access to state
   get value() {
     return this.count;
   }
 
-  // Setter for external state setting
   set value(newValue) {
     this.count = parseInt(newValue) || 0;
     this.updateDisplay();
   }
 
-  // Lifecycle method - called when attributes change
   static get observedAttributes() {
     return ['initial-count'];
   }
@@ -143,9 +134,7 @@ class Count extends HTMLElement {
     }
   }
 
-  // Lifecycle method - called when component is added to DOM
   connectedCallback() {
-    // Initialize count from attribute if provided
     const initialCount = this.getAttribute('initial-count');
     if (initialCount !== null) {
       this.count = parseInt(initialCount) || 0;
