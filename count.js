@@ -1,12 +1,13 @@
+import "./count-display.js";
+import "./count-buttons.js";
+import "./reset-button.js";
+
 class Count extends HTMLElement {
   constructor() {
     super();
     this.count = 0;
-    
-    const shadow = this.attachShadow({ mode: "open" });
-    
+    this.attachShadow({ mode: "open" });
     this.render();
-    this.setupEventListeners();
   }
 
   render() {
@@ -26,16 +27,7 @@ class Count extends HTMLElement {
           color: darkgreen;
           margin: 0 0 20px 0;
         }
-        .count-display {
-          font-size: 2em;
-          font-weight: bold;
-          color: #333;
-          margin: 20px 0;
-          padding: 10px;
-          background-color: white;
-          border-radius: 4px;
-        }
-        button {
+          button {
           background-color: #007bff;
           color: white;
           border: none;
@@ -61,25 +53,24 @@ class Count extends HTMLElement {
       </style>
       <div class="counter">
         <h1>Counter Component</h1>
-        <div class="count-display">${this.count}</div>
-        <div>
-          <button id="decrement">-</button>
-          <button id="increment">+</button>
-          <button id="reset" class="reset-btn">Reset</button>
-        </div>
+        <count-display></count-display>
+        <count-buttons></count-buttons>
         <slot></slot>
       </div>
     `;
   }
 
-  setupEventListeners() {
-    const incrementBtn = this.shadowRoot.getElementById('increment');
-    const decrementBtn = this.shadowRoot.getElementById('decrement');
-    const resetBtn = this.shadowRoot.getElementById('reset');
+  connectedCallback() {
+    this.shadowRoot.addEventListener("increment", () => this.increment());
+    this.shadowRoot.addEventListener("decrement", () => this.decrement());
+    this.shadowRoot.addEventListener("reset", () => this.reset());
 
-    incrementBtn.addEventListener('click', () => this.increment());
-    decrementBtn.addEventListener('click', () => this.decrement());
-    resetBtn.addEventListener('click', () => this.reset());
+    const initialCount = this.getAttribute("initial-count");
+    if (initialCount !== null) {
+      this.count = parseInt(initialCount) || 0;
+    }
+
+    this.updateDisplay();
   }
 
   increment() {
@@ -101,15 +92,17 @@ class Count extends HTMLElement {
   }
 
   updateDisplay() {
-    const display = this.shadowRoot.querySelector('.count-display');
-    display.textContent = this.count;
+    const display = this.shadowRoot.querySelector("count-display");
+    if (display) display.value = this.count;
   }
 
   dispatchCountChangeEvent() {
-    this.dispatchEvent(new CustomEvent('countchange', {
-      detail: { count: this.count },
-      bubbles: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent("countchange", {
+        detail: { count: this.count },
+        bubbles: true,
+      })
+    );
   }
 
   get value() {
@@ -122,22 +115,12 @@ class Count extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['initial-count'];
+    return ["initial-count"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'initial-count') {
+    if (name === "initial-count") {
       this.count = parseInt(newValue) || 0;
-      if (this.shadowRoot) {
-        this.updateDisplay();
-      }
-    }
-  }
-
-  connectedCallback() {
-    const initialCount = this.getAttribute('initial-count');
-    if (initialCount !== null) {
-      this.count = parseInt(initialCount) || 0;
       this.updateDisplay();
     }
   }
